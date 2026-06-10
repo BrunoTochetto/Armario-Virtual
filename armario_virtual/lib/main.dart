@@ -4,7 +4,14 @@ import 'src/page/inicial.dart';
 
 void main() {
   runApp(MaterialApp(
-        home: ExplicitAnimationScreen()
+        home: Column(
+          children: [
+            ExplicitAnimationScreen(),
+            ExplicitAnimationScreen(),
+            ExplicitAnimationScreen(),
+            ExplicitAnimationScreen()
+          ],
+        )
       )
     ); // Função que chama o FLUTTER
 }

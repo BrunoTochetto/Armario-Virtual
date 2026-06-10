@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class ExplicitAnimationScreen extends StatefulWidget {
   const ExplicitAnimationScreen({super.key});
@@ -10,20 +11,17 @@ class ExplicitAnimationScreen extends StatefulWidget {
 class _ExplicitAnimationScreenState extends State<ExplicitAnimationScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<Color?> _colorAnimation;
+
+  // Isso será a porcentagem que eles voam por ai, então de -100 à 100 porcento. No código ele ajusta.
+  final List<double> _offsetValues = [0.0, -30, 40.0, -40.0, 34, -40, 10, -20.0, 15, -23, 34, -100];
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
       vsync: this,
-    )..repeat(reverse: true);
-
-    _colorAnimation = ColorTween(
-      begin: Colors.red,
-      end: Colors.green,
-    ).animate(_controller);
+    )..repeat();
   }
 
   @override
@@ -32,22 +30,48 @@ class _ExplicitAnimationScreenState extends State<ExplicitAnimationScreen>
     super.dispose();
   }
 
+  double mapRange({
+  required double value,
+  required double inMin,
+  required double inMax,
+  required double outMin,
+  required double outMax,
+    }) {
+      return outMin + (value - inMin) * (outMax - outMin) / (inMax - inMin);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Explicit Animation')),
-      body: Center(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Container(
+    return Center(
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          final index = (_controller.value * _offsetValues.length).floor() % _offsetValues.length;
+          final angle = _offsetValues[index];
+
+          return Transform(
+            transform: Matrix4.rotationZ(mapRange(
+              value: angle,
+              inMin: -100,
+              inMax: 100,
+              outMin: -3,
+              outMax: 3
+            ) * (pi / 180)),
+            alignment: Alignment.center,
+            child: Container(
               height: 150,
               width: 150,
-              color: _colorAnimation.value,
-            );
-          },
-        ),
-      ),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage("assets/images/papelao.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          );
+        },
+      )
     );
   }
 }
+ 
