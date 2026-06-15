@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class ExplicitAnimationScreen extends StatefulWidget {
-  const ExplicitAnimationScreen({super.key});
+  final Widget child;
+  final VoidCallback onPressed;
+
+  const ExplicitAnimationScreen({super.key, required this.child, this.width = 150, this.height = 150, required this.onPressed});
+
+  final double height;
+  final double width;
 
   @override
   State<ExplicitAnimationScreen> createState() => _ExplicitAnimationScreenState();
@@ -59,14 +65,15 @@ class _ExplicitAnimationScreenState extends State<ExplicitAnimationScreen>
             ) * (pi / 180)),
             alignment: Alignment.center,
             child: Container(
-              height: 150,
-              width: 150,
+              width: widget.width,
+              height: widget.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: const AssetImage("assets/images/papelao.png"),
                   fit: BoxFit.cover,
                 ),
               ),
+              child: ElevatedButton(onPressed: widget.onPressed, child: widget.child),
             ),
           );
         },

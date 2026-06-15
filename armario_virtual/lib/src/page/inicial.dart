@@ -10,11 +10,29 @@ class PaginaInicial extends StatelessWidget {
     return ListView(
       scrollDirection: Axis.vertical,
       children: [
-        BotaoPapelao(onPressed: () {}, texto: "ola mundo",),
-        BotaoPapelao(onPressed: () {}),
-        BotaoPapelao(onPressed: () {}),
-        BotaoPapelao(onPressed: () {})
-      ]
+            BotaoPapelao(
+              onPressed: () {debugPrint("click");},
+              height: 150,
+              width: 1,
+              child: Center(
+                child: Text("Cabeça")
+              ),
+              
+            ),
+            BotaoPapelao(
+              child: Text("Ombro"),
+              onPressed: () {debugPrint("click");},
+            ),
+            BotaoPapelao(
+              child: Text("Joelho"),
+              onPressed: () {debugPrint("click");},
+            ),
+            BotaoPapelao(
+              child: Text("Pé"),
+              onPressed: () {debugPrint("click");},
+            ),
+            
+          ],
       );
   }
 }
