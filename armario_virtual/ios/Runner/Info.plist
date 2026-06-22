@@ -73,3 +73,8 @@
 </dict>
 
 </plist>
+<key>NSCameraUsageDescription</key>
+<string>Precisamos da sua permissão para acessar a câmera e tirar fotos.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Precisamos da sua permissão para acessar a biblioteca de fotos.</string>
+

@@ -15,7 +15,7 @@ class Inicial extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/fundoTela/fundoBranco.png',
+              'assets/fundo/fundoBranco.png',
               fit: BoxFit.cover,
             ),
           ),

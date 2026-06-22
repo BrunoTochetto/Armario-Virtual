@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgets/roupaCard.dart';
-import '../../mock/mock.dart';
-import '../widgets/bottomNavigation.dart';
+import '../../widgets/roupaCard.dart';
+import '../../../mock/mock.dart';
+import '../../widgets/bottomNavigation.dart';
 
 class ArmarioTronco extends StatelessWidget {
   const ArmarioTronco({super.key});

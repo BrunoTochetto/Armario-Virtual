@@ -1,3 +1,4 @@
+import 'package:armario_virtual/src/page/armarioPadrao.dart';
 import 'package:armario_virtual/src/page/inicial.dart';
 import 'package:flutter/material.dart';
 import './popUpEscolher.dart';
@@ -30,11 +31,9 @@ class BottomBar extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const Inicial(),
-                          ),
-                        );
+                  context,
+                  MaterialPageRoute(builder: (_) => const Inicial()),
+                );
               },
               child: Image.asset('assets/icon/iconCasa.png', height: 70),
             ),
@@ -45,6 +44,14 @@ class BottomBar extends StatelessWidget {
             right: 60,
             child: GestureDetector(
               onTap: () => _abrirArmario(context),
+              onLongPress: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ArmarioPadrao(
+                  categoria: 'cabeca',
+                  fundoTela: 'fundoAmarelo',
+                  textoArmario: 'Cabeça',
+                )),
+              ),
               child: Image.asset('assets/icon/iconArmario.png', height: 70),
             ),
           ),

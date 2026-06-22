@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../widgets/roupaCard.dart';
-import '../../mock/mock.dart';
-import '../widgets/bottomNavigation.dart';
+import '../../widgets/roupaCard.dart';
+import '../../../mock/mock.dart';
+import '../../widgets/bottomNavigation.dart';
 
-class ArmarioPernas extends StatelessWidget {
-  const ArmarioPernas({super.key});
+class ArmarioCabeca extends StatelessWidget {
+  const ArmarioCabeca({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ArmarioPernas extends StatelessWidget {
           // Fundo
           Positioned.fill(
             child: Image.asset(
-              'assets/fundoTela/fundoVerm.png',
+              'assets/fundoTela/fundoAmarelo.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -31,10 +31,10 @@ class ArmarioPernas extends StatelessWidget {
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    Image.asset('assets/fundo/fundoTextoAm,png', width: 240),
+                    Image.asset('assets/fundo/fundoTextoAm.png', width: 240),
 
                     const Text(
-                      'Armário -\nPernas',
+                      'Armário -\nCabeça',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 28),
                     ),

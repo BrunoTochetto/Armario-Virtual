@@ -22,9 +22,13 @@ void main() {
   }
 
   runApp(
-    const MaterialApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Inicial(),
+      home: const Inicial(),
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) => const Inicial()
+      // }
     ),
   );
 }

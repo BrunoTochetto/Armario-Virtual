@@ -1,9 +1,9 @@
 //popUp para escolher o armário, na página principal
 import 'package:flutter/material.dart';
-import '../page/armarioCabeca.dart';
-import '../page/armarioTronco.dart';
-import '../page/armarioPernas.dart';
-import '../page/armarioPes.dart';
+import '../page/armario/armarioCabeca.dart';
+import '../page/armario/armarioTronco.dart';
+import '../page/armario/armarioPernas.dart';
+import '../page/armario/armarioPes.dart';
 
 class PopUpEscolher extends StatelessWidget {
   const PopUpEscolher({super.key});
