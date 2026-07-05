@@ -1,12 +1,13 @@
 import '../dao/roupa.dart';
+import 'dart:typed_data';
 
 class Roupa {
-  final int id;
-  final String imagem;
+  int? id;
+  final Uint8List imagem; // Uma imagem é salva como um "binary data" ou BLOB, então é preciso utilizar um Unissigned Integer 8 List para pegar os dados da imagem, transformar em binário para armazrenar corretamente.
   final String categoria;
 
-  const Roupa({
-    required this.id,
+  Roupa({
+    this.id,
     required this.imagem,
     required this.categoria,
   });
@@ -18,6 +19,13 @@ class Roupa {
       "categoria": categoria
      };
   }
+
+  static Map<String, String> categoriaBonito = {
+    "cabeca": "Cabeça",
+    "tronco": "Tronco",
+    "pernas": "Pernas",
+    "pes": "Pés"
+  };
 
   static Future<int> inserir(Roupa roupa) async {
     return await inserirDatabase(roupa);
@@ -38,7 +46,7 @@ class Roupa {
   static Roupa fromMap(Map<String, dynamic> map) {
     return Roupa(
       id: map['id'] as int,
-      imagem: map['imagem'] as String,
+      imagem: map['imagem'] as Uint8List,
       categoria: map['categoria'] as String,
     );
   }

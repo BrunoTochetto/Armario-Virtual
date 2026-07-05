@@ -11,66 +11,46 @@ class Inicial extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: const BottomBar(),
 
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              'assets/fundo/fundoBranco.png',
-              fit: BoxFit.cover,
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/fundo/fundoBranco.png'),
+            fit: BoxFit.cover,
           ),
-
-          SafeArea(
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-
-                // // Título
-                // Align(
-                //   alignment: Alignment.topRight,
-                //   child: Image.asset(
-                //     'assets/fundo/fundoTextoAm.png',
-                //     width: 220,
-                //   ),
-                // ),
-
-                const SizedBox(height: 15),
-
-                // Área dos 4 seletores
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
-                      PassarRoupa(
-                        fundo: 'assets/fundo/fundoBotaoAm.png',
-                        icone: 'assets/icon/iconCabeça.png',
-                      ),
-                      SizedBox(height: 8),
-
-                      PassarRoupa(
-                        fundo: 'assets/fundo/fundoBotaoAz.png',
-                        icone: 'assets/icon/iconTronco.png',
-                      ),
-                      SizedBox(height: 8),
-
-                      PassarRoupa(
-                        fundo: 'assets/fundo/fundoBotaoV.png',
-                        icone: 'assets/icon/iconPernas.png',
-                      ),
-                      SizedBox(height: 8),
-
-                      PassarRoupa(
-                        fundo: 'assets/fundo/fundoBotaoAz.png',
-                        icone: 'assets/icon/iconPés.png',
-                      ),
-                      
-                    ],
-                  ),
-                ),
-              ],
-            ),
+        ),
+        child: ListView(
+          children: [Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              PassarRoupa(
+                fundo: 'assets/fundo/fundoBotaoAm.png',
+                iconePadrao: 'assets/icon/iconCabeça.png',
+                categoria: 'cabeca',
+              ),
+              SizedBox(height: 8),
+                          
+              PassarRoupa(
+                fundo: 'assets/fundo/fundoBotaoAz.png',
+                iconePadrao: 'assets/icon/iconTronco.png',
+                categoria: 'tronco',
+              ),
+              SizedBox(height: 8),
+                          
+              PassarRoupa(
+                fundo: 'assets/fundo/fundoBotaoV.png',
+                iconePadrao: 'assets/icon/iconPernas.png',
+               categoria: 'pernas', 
+              ),
+              SizedBox(height: 8),
+                          
+              PassarRoupa(
+                fundo: 'assets/fundo/fundoBotaoAz.png',
+                iconePadrao: 'assets/icon/iconPés.png',
+                categoria: 'pes',
+              ),
+            ],
           ),
-        ],
+        ]),
       ),
     );
   }

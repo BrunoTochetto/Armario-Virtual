@@ -1,9 +1,5 @@
 //popUp para escolher o armário, na página principal
 import 'package:flutter/material.dart';
-import '../page/armario/armarioCabeca.dart';
-import '../page/armario/armarioTronco.dart';
-import '../page/armario/armarioPernas.dart';
-import '../page/armario/armarioPes.dart';
 
 class PopUpEscolher extends StatelessWidget {
   const PopUpEscolher({super.key});
@@ -26,22 +22,37 @@ class PopUpEscolher extends StatelessWidget {
             ),
 
             // Caixa de texto superior
-            Positioned(
-              top: 0,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.asset('assets/fundo/fundoTextoAm.png', width: 350),
+            // Positioned(
+            //   top: 0,
+            //   child: Stack(
+            //     alignment: Alignment.center,
+            //     children: [
+            //       Image.asset('assets/fundo/fundoTextoAm.png', width: 350),
 
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Text(
-                      'Qual armário você\nquer ver?',
+            //       const Padding(
+            //         padding: EdgeInsets.symmetric(horizontal: 40),
+            //         child: Text(
+            //           'Qual armário você quer ver?',
+            //           textAlign: TextAlign.center,
+            //           style: TextStyle(fontSize: 30),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage('assets/fundo/fundoTextoAm.png')),
+                  
+                ),
+                
+              child: Padding(
+                padding: const EdgeInsets.all(45.0),
+                child: Text(
+                      'Qual armário você quer ver?',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 30),
                     ),
-                  ),
-                ],
               ),
             ),
 
@@ -62,13 +73,8 @@ class PopUpEscolher extends StatelessWidget {
                       imagem: 'assets/icon/iconCabeça.png',
                       texto: 'Cabeça',
                       onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const ArmarioCabeca(),
-                          ),
-                        );
+                        // Navigator.pop(context);
+                        Navigator.pushNamed(context, '/armario/cabeca');
                       },
                     ),
 
@@ -76,13 +82,7 @@ class PopUpEscolher extends StatelessWidget {
                       imagem: 'assets/icon/iconTronco.png',
                       texto: 'Tronco',
                       onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const ArmarioTronco(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/armario/tronco');
                       },
                     ),
 
@@ -90,13 +90,7 @@ class PopUpEscolher extends StatelessWidget {
                       imagem: 'assets/icon/iconPernas.png',
                       texto: 'Pernas',
                       onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const ArmarioPernas(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/armario/pernas');
                       },
                     ),
 
@@ -104,12 +98,7 @@ class PopUpEscolher extends StatelessWidget {
                       imagem: 'assets/icon/iconPés.png',
                       texto: 'Pés',
                       onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const ArmarioPes()),
-                        );
-                        ;
+                        Navigator.pushNamed(context, '/armario/pes');
                       },
                     ),
                   ],

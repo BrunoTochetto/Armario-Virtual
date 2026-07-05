@@ -105,7 +105,7 @@ class ArmarioPadrao extends StatelessWidget {
       // Botão "+"
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-              Navigator.pushNamed(context, '/addRoupa');
+              Navigator.pushNamed(context, '/addRoupa', arguments: {'categoria': categoria});
             },
             backgroundColor: Colors.transparent,
             child: Image.asset('assets/botoes/botaoAdd.png', width: 80),

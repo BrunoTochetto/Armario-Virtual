@@ -12,6 +12,12 @@ class RoupaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget roupaWidget = SizedBox(width: 1, height: 1,);
+    if (roupa.imagem.isEmpty) {
+      // roupaWidget;
+    } else {
+      roupaWidget = Image.memory(roupa.imagem, fit: BoxFit.contain);
+    }
     return SizedBox(
       width: 140,
       height: 140,
@@ -26,10 +32,7 @@ class RoupaCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(18),
-            child: Image.asset(
-              roupa.imagem,
-              fit: BoxFit.contain,
-            ),
+            child: roupaWidget
           ),
         ],
       ),
