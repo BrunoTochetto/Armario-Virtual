@@ -15,13 +15,10 @@ void main() {
 
   if (kIsWeb) {
     databaseFactory = databaseFactoryFfiWeb;
-  } else if(Platform.isWindows || Platform.isLinux || Platform.isMacOS) { //padrão para qualquer app
+  } else if(Platform.isWindows || Platform.isLinux || Platform.isMacOS ) { //padrão para qualquer app
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
-  } else {
-    //de outro
-    databaseFactory = databaseFactoryFfiWeb;
-  }
+  } 
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -30,8 +27,8 @@ void main() {
       routes: {
         '/': (context) => Inicial(),
         '/addRoupa': (context) {
-          final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-          final categoria = args?['categoria'] as String? ?? 'cabeca';
+          final Map<String, dynamic>? args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          final String categoria = args?['categoria'] as String? ?? 'cabeca';
           return adicionarRoupa(categoria: categoria);
         },
         '/armario/cabeca': (context) => ArmarioPadrao(

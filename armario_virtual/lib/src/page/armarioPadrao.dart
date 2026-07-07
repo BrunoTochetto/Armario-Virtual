@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../widgets/roupaCard.dart';
 import '../widgets/bottomNavigation.dart';
 import '../../model/roupa.dart';
+import '../widgets/decorators/animator.dart';
 
-class ArmarioPadrao extends StatelessWidget {
-  
+class ArmarioPadrao extends StatefulWidget {
   final String fundoTela;
   final String textoArmario;
   final String categoria;
-  
+
   const ArmarioPadrao({
     super.key,
     required this.fundoTela,
@@ -16,10 +16,15 @@ class ArmarioPadrao extends StatelessWidget {
     required this.categoria,
   });
 
+  @override
+  State<ArmarioPadrao> createState() => _ArmarioPadraoState();
+}
+
+class _ArmarioPadraoState extends State<ArmarioPadrao> {
   Future<List<Map<String, dynamic>>> _carregarRoupas() async {
     // Simular carregamento de dados
     // return roupasMock;
-    final dados = await Roupa.acharRoupaDeCategoria(categoria);
+    final dados = await Roupa.acharRoupaDeCategoria(widget.categoria);
     return dados;
   }
 
@@ -32,7 +37,7 @@ class ArmarioPadrao extends StatelessWidget {
           // Fundo
           Positioned.fill(
             child: Image.asset(
-              'assets/fundoTela/$fundoTela.png',
+              'assets/fundoTela/${widget.fundoTela}.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -48,7 +53,8 @@ class ArmarioPadrao extends StatelessWidget {
                   children: [
                     Image.asset('assets/fundo/fundoTextoAm.png', width: 240),
 
-                    Text('Armário \n$textoArmario',
+                    Text(
+                      'Armário \n${widget.textoArmario}',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 28),
                     ),
@@ -63,13 +69,9 @@ class ArmarioPadrao extends StatelessWidget {
                     future: _carregarRoupas(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text('Erro: ${snapshot.error}'),
-                        );
+                        return Center(child: Text('Erro: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Center(
                           child: Text('Nenhuma roupa encontrada'),
@@ -91,7 +93,14 @@ class ArmarioPadrao extends StatelessWidget {
                               childAspectRatio: 1,
                             ),
                         itemBuilder: (context, index) {
-                          return RoupaCard(roupa: Roupa.fromMap(roupas[index]));
+                          return Animator(
+                            offsetAnimation: index % 6,
+                            child: RoupaCard(
+                              roupa: Roupa.fromMap(roupas[index]),
+                              // width: MediaQuery.of(context).size.width * 0.1,
+                              // height: MediaQuery.of(context).size.width * 0.1,
+                            ),
+                          );
                         },
                       );
                     },
@@ -103,13 +112,17 @@ class ArmarioPadrao extends StatelessWidget {
         ],
       ),
       // Botão "+"
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-              Navigator.pushNamed(context, '/addRoupa', arguments: {'categoria': categoria});
-            },
-            backgroundColor: Colors.transparent,
-            child: Image.asset('assets/botoes/botaoAdd.png', width: 80),
-          ),
-        );
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            '/addRoupa',
+            arguments: {'categoria': widget.categoria},
+          ).then((onValue) => setState(() => {}));
+        },
+        backgroundColor: Colors.transparent,
+        child: Image.asset('assets/botoes/botaoAdd.png', width: 80),
+      ),
+    );
   }
 }

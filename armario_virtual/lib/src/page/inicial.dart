@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import '../widgets/bottomNavigation.dart';
 import '../widgets/passarRoupa.dart';
+import '../../model/roupa.dart';
+import '../widgets/roupaCard.dart';
 
 class Inicial extends StatelessWidget {
   const Inicial({super.key});
@@ -19,73 +21,92 @@ class Inicial extends StatelessWidget {
           ),
         ),
         child: ListView(
-          children: [Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              PassarRoupa(
-                fundo: 'assets/fundo/fundoBotaoAm.png',
-                iconePadrao: 'assets/icon/iconCabeça.png',
-                categoria: 'cabeca',
-              ),
-              SizedBox(height: 8),
-                          
-              PassarRoupa(
-                fundo: 'assets/fundo/fundoBotaoAz.png',
-                iconePadrao: 'assets/icon/iconTronco.png',
-                categoria: 'tronco',
-              ),
-              SizedBox(height: 8),
-                          
-              PassarRoupa(
-                fundo: 'assets/fundo/fundoBotaoV.png',
-                iconePadrao: 'assets/icon/iconPernas.png',
-               categoria: 'pernas', 
-              ),
-              SizedBox(height: 8),
-                          
-              PassarRoupa(
-                fundo: 'assets/fundo/fundoBotaoAz.png',
-                iconePadrao: 'assets/icon/iconPés.png',
-                categoria: 'pes',
-              ),
-            ],
-          ),
-        ]),
-      ),
-    );
+          children: [
+            _compactFutureBuilderParaRoupas(
+              future: Roupa.acharRoupaDeCategoria('cabeca'),
+              // initialData:,
+              iconePadrao: 'assets/icon/iconCabeca.png',
+              fundo: 'fundoBotaoAm',
+
+            ),
+            
+            SizedBox(height: 8),
+
+            _compactFutureBuilderParaRoupas(
+              future: Roupa.acharRoupaDeCategoria('tronco'),
+              // initialData:,
+              iconePadrao: 'assets/icon/iconTronco.png',
+              fundo: 'fundoBotaoAz',
+            ),
+            
+            SizedBox(height: 8),
+
+            _compactFutureBuilderParaRoupas(
+              future: Roupa.acharRoupaDeCategoria('pernas'),
+              // initialData:,
+              iconePadrao: 'assets/icon/iconPernas.png',
+              fundo: 'fundoBotaoV',
+            ),
+            
+            SizedBox(height: 8),
+
+            _compactFutureBuilderParaRoupas(
+              future: Roupa.acharRoupaDeCategoria('pes'),
+              // initialData:,
+              iconePadrao: 'assets/icon/iconPes.png',
+              fundo: 'fundoBotaoAz',
+            ),
+            
+            SizedBox(height: 8),
+          ]
+      )));
   }
 }
-// class PaginaInicial extends StatelessWidget {
-//   const PaginaInicial({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView(
-//       scrollDirection: Axis.vertical,
-//       children: [
-//             BotaoPapelao(
-//               onPressed: () {debugPrint("click");},
-//               height: 150,
-//               width: 1,
-//               child: Center(
-//                 child: Text("Cabeça")
-//               ),
+class _compactFutureBuilderParaRoupas extends StatelessWidget {
+  Future<List<Map<String, dynamic>>>? future;
+  List<Map<String, dynamic>>? initialData;
+  final String iconePadrao;
+  final String fundo;
+
+    _compactFutureBuilderParaRoupas({
+      required this.future,
+      this.initialData,
+      this.iconePadrao = 'assets/icon/iconCabeca.png',
+      this.fundo = 'fundoBotaoAm',
+    });
+
+    int valorAtual = 0;
+    
+    @override
+    Widget build(BuildContext context) {
+      return FutureBuilder(
+      initialData: initialData,
+      future: future,
+      builder: (context, snapshot) {
+        //Snapshot é a variável dos dados pegados.
+        // Também deve-se tratar os estados de uma conexão.
+        // Essa conexão é com o banco. Tanto externo como interno.
+        // Esses estados são feitos no snapshot.
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return Text("Erro de conexão com o banco de dados.");
+            case ConnectionState.active:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            case ConnectionState.done:
+              // Obter as informações do banco
+              List<Map<String, dynamic>> valores = snapshot.data as List<Map<String, dynamic>>; // Casting, fazendo o snapshot ser forçadamente um Map
               
-//             ),
-//             BotaoPapelao(
-//               child: Text("Ombro"),
-//               onPressed: () {debugPrint("click");},
-//             ),
-//             BotaoPapelao(
-//               child: Text("Joelho"),
-//               onPressed: () {debugPrint("click");},
-//             ),
-//             BotaoPapelao(
-//               child: Text("Pé"),
-//               onPressed: () {debugPrint("click");},
-//             ),
-            
-//           ],
-//       );
-//   }
-// }
+              
+              return PassarRoupa(
+                fundo: fundo,
+                iconePadrao: iconePadrao,
+                roupaLista: valores,
+              );
+          }
+      },
+      );
+    }
+    
+  }

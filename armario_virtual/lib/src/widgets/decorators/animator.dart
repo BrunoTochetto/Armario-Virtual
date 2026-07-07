@@ -4,13 +4,15 @@ import 'dart:math';
 class Animator extends StatefulWidget {
   final Widget child;
   final Duration duration;
+  final int offsetAnimation;
   final List<double> offsetValues;
 
   const Animator({
     super.key,
     required this.child,
-    this.duration = const Duration(seconds: 3),
+    this.duration = const Duration(seconds: 6),
     this.offsetValues = const [0.0, -30, 40.0, -40.0, 34, -40, 10, -20.0, 15, -23, 34, -100],
+    this.offsetAnimation = 0,
   });
 
   @override
@@ -50,7 +52,7 @@ class _AnimatorState extends State<Animator> with SingleTickerProviderStateMixin
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        final index = (_controller.value * widget.offsetValues.length).floor() % widget.offsetValues.length;
+        final index = ((_controller.value * widget.offsetValues.length).floor() + widget.offsetAnimation) % widget.offsetValues.length;
         final angle = widget.offsetValues[index];
 
         return Transform(

@@ -17,6 +17,7 @@ class adicionarRoupa extends StatefulWidget {
 
 class _adicionarRoupaState extends State<adicionarRoupa> {
   late String categoria;
+  late String categoriaBonito;
   Uint8List imagemBytes = Uint8List.fromList([]);
 
   @override
@@ -30,6 +31,7 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
     final XFile? pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
     );
+    
 
     if (pickedFile != null) {
       // Convert image into raw bytes (Uint8List)
@@ -70,14 +72,16 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
             elevation: 16,
             value: categoria,
             items: categorias.map<DropdownMenuItem<String>>((String value) {
+              categoriaBonito = Roupa.categoriaBonito[value]!;
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(Roupa.categoriaBonito[value]!),
+                child: Text(categoriaBonito),
               );
             }).toList(),
             onChanged: (String? value) {
               setState(() {
                 categoria = value!;
+                // categoriaBonito = categoriaBonito;
               });
             },
           ),
@@ -99,6 +103,7 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
             height: 250,
             child: RoupaCard(
               roupa: Roupa(imagem: imagemBytes, categoria: categoria),
+              iconePadrao: 'assets/icon/icon${categoria[0].toUpperCase()}${categoria.substring(1)}.png',
             ),
           ),
 

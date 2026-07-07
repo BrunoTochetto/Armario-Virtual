@@ -7,7 +7,7 @@ import "package:sqflite/sqflite.dart";
 Future<Database> getDataBase() async {
   final String caminhoBanco = join(
     await getDatabasesPath(),
-    'armariovirtu2al.db',
+    'databaseArmario.db',
   ); // Variável do endereço padrão do armazenamento do banco de dados no dispositivo
   return openDatabase(
     caminhoBanco,

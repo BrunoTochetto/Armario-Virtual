@@ -1,5 +1,6 @@
 //popUp para escolher o armário, na página principal
 import 'package:flutter/material.dart';
+import 'decorators/animator.dart';
 
 class PopUpEscolher extends StatelessWidget {
   const PopUpEscolher({super.key});
@@ -16,43 +17,28 @@ class PopUpEscolher extends StatelessWidget {
           alignment: Alignment.topCenter,
           children: [
             // Fundo principal
+            // ! Quando volta não atualiza!!
             Positioned(
               top: 100,
               child: Image.asset('assets/fundo/fundoPopUp.png', width: 320),
             ),
 
-            // Caixa de texto superior
-            // Positioned(
-            //   top: 0,
-            //   child: Stack(
-            //     alignment: Alignment.center,
-            //     children: [
-            //       Image.asset('assets/fundo/fundoTextoAm.png', width: 350),
-
-            //       const Padding(
-            //         padding: EdgeInsets.symmetric(horizontal: 40),
-            //         child: Text(
-            //           'Qual armário você quer ver?',
-            //           textAlign: TextAlign.center,
-            //           style: TextStyle(fontSize: 30),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage('assets/fundo/fundoTextoAm.png')),
+            Animator(
+              duration: Duration(seconds: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage('assets/fundo/fundoTextoAm.png')),
+                    
+                  ),
                   
+                child: Padding(
+                  padding: const EdgeInsets.all(45.0),
+                  child: Text(
+                        'Qual armário você quer ver?',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 30),
+                      ),
                 ),
-                
-              child: Padding(
-                padding: const EdgeInsets.all(45.0),
-                child: Text(
-                      'Qual armário você quer ver?',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 30),
-                    ),
               ),
             ),
 
@@ -70,7 +56,7 @@ class PopUpEscolher extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     _BotaoArmario(
-                      imagem: 'assets/icon/iconCabeça.png',
+                      imagem: 'assets/icon/iconCabeca.png',
                       texto: 'Cabeça',
                       onTap: () {
                         // Navigator.pop(context);
@@ -95,7 +81,7 @@ class PopUpEscolher extends StatelessWidget {
                     ),
 
                     _BotaoArmario(
-                      imagem: 'assets/icon/iconPés.png',
+                      imagem: 'assets/icon/iconPes.png',
                       texto: 'Pés',
                       onTap: () {
                         Navigator.pushNamed(context, '/armario/pes');
