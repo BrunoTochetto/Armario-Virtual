@@ -9,12 +9,14 @@ class PassarRoupa extends StatefulWidget {
   final String fundo;
   final String iconePadrao;
   final List<Map<String, dynamic>> roupaLista;
+  final Function? atualizarPaginaQueEsta;
 
   const PassarRoupa({
     super.key,
     required this.fundo,
     required this.iconePadrao,
     required this.roupaLista,
+    this.atualizarPaginaQueEsta,
   });
 
   @override
@@ -23,11 +25,13 @@ class PassarRoupa extends StatefulWidget {
 
 class _PassarRoupaState extends State<PassarRoupa> {
   late List<Map<String, dynamic>>? roupaLista;
+  late Function? atualizarPaginaQueEsta;
 
   @override
   void initState() {
     super.initState();
     roupaLista = widget.roupaLista;
+    atualizarPaginaQueEsta = widget.atualizarPaginaQueEsta;
   }
 
   int index = 0;
@@ -63,13 +67,16 @@ class _PassarRoupaState extends State<PassarRoupa> {
       roupaAtualCriada = Roupa(
         categoria: valoresAtuais["categoria"],
         imagem: valoresAtuais["imagem"],
+        id: valoresAtuais["id"]
       );
     }
     Widget roupaWidget = RoupaCard(
       roupa: roupaAtualCriada,
       iconePadrao: widget.iconePadrao,
       papelFundo: widget.fundo,
-      width: MediaQuery.of(context).size.width * 0.5,
+      width: MediaQuery.of(context).size.width * 0.48,
+      height: MediaQuery.of(context).size.height * 0.18,
+      atualizarPaginaQueEsta: atualizarPaginaQueEsta,
     );
 
     Widget botaoDireitaWidget = maxIndex != 0

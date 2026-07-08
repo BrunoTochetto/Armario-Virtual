@@ -27,14 +27,37 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
   }
 
   void pedirRoupa() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
+    final ImageSource? source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt_outlined),
+                title: const Text('Tirar uma foto'),
+                onTap: () => Navigator.pop(context, ImageSource.camera),
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library_outlined),
+                title: const Text('Buscar na galeria'),
+                onTap: () => Navigator.pop(context, ImageSource.gallery),
+              ),
+            ],
+          ),
+        );
+      },
     );
-    
+
+    if (source == null) {
+      return;
+    }
+
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: source);
 
     if (pickedFile != null) {
-      // Convert image into raw bytes (Uint8List)
       final bytes = await pickedFile.readAsBytes();
       setState(() {
         imagemBytes = bytes;
@@ -63,61 +86,70 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
         ),
       ),
 
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // Selecionador de categoria
-          DropdownButton<String>(
-            icon: const Icon(Icons.arrow_downward),
-            elevation: 16,
-            value: categoria,
-            items: categorias.map<DropdownMenuItem<String>>((String value) {
-              categoriaBonito = Roupa.categoriaBonito[value]!;
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(categoriaBonito),
-              );
-            }).toList(),
-            onChanged: (String? value) {
-              setState(() {
-                categoria = value!;
-                // categoriaBonito = categoriaBonito;
-              });
-            },
-          ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/fundoTela/fundoVermPont.png')
+            )
+        ),
 
-          const SizedBox(height: 24),
-          // Adicionar foto
-          SizedBox(
-            width: 50,
-            height: 50,
-            child: IconButton(
-              onPressed: pedirRoupa,
-              icon: const Icon(Icons.add_a_photo_outlined),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            // Selecionador de categoria
+            DropdownButton<String>(
+              icon: const Icon(Icons.arrow_downward),
+              elevation: 16,
+              value: categoria,
+              items: categorias.map<DropdownMenuItem<String>>((String value) {
+                categoriaBonito = Roupa.categoriaBonito[value]!;
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(categoriaBonito),
+                );
+              }).toList(),
+              onChanged: (String? value) {
+                setState(() {
+                  categoria = value!;
+                  // categoriaBonito = categoriaBonito;
+                });
+              },
             ),
-          ),
-
-          // Mostrar foto
-          SizedBox(
-            width: 50,
-            height: 250,
-            child: RoupaCard(
-              roupa: Roupa(imagem: imagemBytes, categoria: categoria),
-              iconePadrao: 'assets/icon/icon${categoria[0].toUpperCase()}${categoria.substring(1)}.png',
+        
+            const SizedBox(height: 24),
+            // Adicionar foto
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: IconButton(
+                onPressed: pedirRoupa,
+                icon: const Icon(Icons.add_a_photo_outlined),
+              ),
             ),
-          ),
-
-          // Enviar foto
-          IconButton(
-            onPressed: () async {
-              bool deuBoa = await inserirRoupa();
-              if (deuBoa) {
-                Navigator.pop(context);
-              }
-            },
-            icon: Icon(Icons.save),
-          ),
-        ],
+        
+            // Mostrar foto
+            SizedBox(
+              width: 50,
+              height: 250,
+              child: RoupaCard(
+                roupa: Roupa(imagem: imagemBytes, categoria: categoria),
+                iconePadrao: 'assets/icon/icon${categoria[0].toUpperCase()}${categoria.substring(1)}.png',
+                navegar: false,
+              ),
+            ),
+        
+            // Enviar foto
+            IconButton(
+              onPressed: () async {
+                bool deuBoa = await inserirRoupa();
+                if (deuBoa) {
+                  Navigator.pop(context);
+                }
+              },
+              icon: Icon(Icons.save),
+            ),
+          ],
+        ),
       ),
     );
   }

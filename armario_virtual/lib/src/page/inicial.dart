@@ -20,93 +20,136 @@ class Inicial extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
+        alignment: AlignmentGeometry.bottomRight,
+
         child: ListView(
           children: [
             _compactFutureBuilderParaRoupas(
-              future: Roupa.acharRoupaDeCategoria('cabeca'),
-              // initialData:,
+              carregarRoupas: () => Roupa.acharRoupaDeCategoria('cabeca'),
               iconePadrao: 'assets/icon/iconCabeca.png',
               fundo: 'fundoBotaoAm',
-
             ),
-            
+
             SizedBox(height: 8),
 
             _compactFutureBuilderParaRoupas(
-              future: Roupa.acharRoupaDeCategoria('tronco'),
-              // initialData:,
+              carregarRoupas: () => Roupa.acharRoupaDeCategoria('tronco'),
               iconePadrao: 'assets/icon/iconTronco.png',
               fundo: 'fundoBotaoAz',
             ),
-            
+
             SizedBox(height: 8),
 
             _compactFutureBuilderParaRoupas(
-              future: Roupa.acharRoupaDeCategoria('pernas'),
-              // initialData:,
+              carregarRoupas: () => Roupa.acharRoupaDeCategoria('pernas'),
               iconePadrao: 'assets/icon/iconPernas.png',
               fundo: 'fundoBotaoV',
             ),
-            
+
             SizedBox(height: 8),
 
             _compactFutureBuilderParaRoupas(
-              future: Roupa.acharRoupaDeCategoria('pes'),
-              // initialData:,
+              carregarRoupas: () => Roupa.acharRoupaDeCategoria('pes'),
               iconePadrao: 'assets/icon/iconPes.png',
               fundo: 'fundoBotaoAz',
             ),
-            
-            SizedBox(height: 8),
-          ]
-      )));
+          ],
+        ),
+      ),
+    );
   }
 }
 
-class _compactFutureBuilderParaRoupas extends StatelessWidget {
-  Future<List<Map<String, dynamic>>>? future;
-  List<Map<String, dynamic>>? initialData;
+class _compactFutureBuilderParaRoupas extends StatefulWidget {
+  final Future<List<Map<String, dynamic>>> Function() carregarRoupas;
   final String iconePadrao;
   final String fundo;
 
-    _compactFutureBuilderParaRoupas({
-      required this.future,
-      this.initialData,
-      this.iconePadrao = 'assets/icon/iconCabeca.png',
-      this.fundo = 'fundoBotaoAm',
-    });
+  const _compactFutureBuilderParaRoupas({
+    super.key,
+    required this.carregarRoupas,
+    this.iconePadrao = 'assets/icon/iconCabeca.png',
+    this.fundo = 'fundoBotaoAm',
+  });
 
-    int valorAtual = 0;
-    
-    @override
-    Widget build(BuildContext context) {
-      return FutureBuilder(
-      initialData: initialData,
-      future: future,
+  @override
+  State<_compactFutureBuilderParaRoupas> createState() =>
+      _compactFutureBuilderParaRoupasState();
+}
+
+class _compactFutureBuilderParaRoupasState
+    extends State<_compactFutureBuilderParaRoupas> {
+  late Future<List<Map<String, dynamic>>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = widget.carregarRoupas();
+  }
+
+  void atualizar() {
+    setState(() {
+      _future = widget.carregarRoupas();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      initialData: [
+        // RoupaCard(
+        //   papelFundo: widget.fundo,
+        //   iconePadrao: widget.iconePadrao,
+        //   navegar: false,
+        //   roupa: null,
+        // ),
+        // PassarRoupa(
+        //       fundo: widget.fundo,
+        //       iconePadrao: widget.iconePadrao,
+        //       atualizarPaginaQueEsta: atualizar,
+        //       roupaLista: [],
+        //     )
+      ],
+      future: _future,
       builder: (context, snapshot) {
         //Snapshot é a variável dos dados pegados.
         // Também deve-se tratar os estados de uma conexão.
         // Essa conexão é com o banco. Tanto externo como interno.
         // Esses estados são feitos no snapshot.
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return Text("Erro de conexão com o banco de dados.");
-            case ConnectionState.active:
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return Text("Erro de conexão com o banco de dados.");
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            return RoupaCard(
+                  papelFundo: widget.fundo,
+                  iconePadrao: widget.iconePadrao,
+                  navegar: false,
+                  roupa: null,
+                  width: MediaQuery.of(context).size.width * 0.48,
+                );
+            // return PassarRoupa(
+            //   fundo: widget.fundo,
+            //   iconePadrao: widget.iconePadrao,
+            //   // atualizarPaginaQueEsta: atualizar,
+            //   roupaLista: [],
+            // );
             case ConnectionState.done:
-              // Obter as informações do banco
-              List<Map<String, dynamic>> valores = snapshot.data as List<Map<String, dynamic>>; // Casting, fazendo o snapshot ser forçadamente um Map
-              
-              
-              return PassarRoupa(
-                fundo: fundo,
-                iconePadrao: iconePadrao,
-                roupaLista: valores,
-              );
-          }
+            // Obter as informações do banco
+            List<Map<String, dynamic>> valores =
+                snapshot.data
+                    as List<
+                      Map<String, dynamic>
+                    >; // Casting, fazendo o snapshot ser forçadamente um Map
+
+            return PassarRoupa(
+              fundo: widget.fundo,
+              iconePadrao: widget.iconePadrao,
+              roupaLista: valores,
+              atualizarPaginaQueEsta: atualizar,
+            );
+        }
       },
-      );
-    }
-    
+    );
   }
+}

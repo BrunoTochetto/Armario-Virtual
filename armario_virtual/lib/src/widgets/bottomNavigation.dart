@@ -24,7 +24,10 @@ class BottomBar extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/');
+                
+                if (ModalRoute.of(context)?.settings.name != "/") {
+                  Navigator.pushNamed(context, '/');
+                }
               },
               child: Image.asset('assets/icon/iconCasa.png', height: 70),
             ),

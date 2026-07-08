@@ -28,6 +28,10 @@ class _ArmarioPadraoState extends State<ArmarioPadrao> {
     return dados;
   }
 
+  void atualizar() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +100,7 @@ class _ArmarioPadraoState extends State<ArmarioPadrao> {
                           return Animator(
                             offsetAnimation: index % 6,
                             child: RoupaCard(
+                              atualizarPaginaQueEsta: atualizar,
                               roupa: Roupa.fromMap(roupas[index]),
                               // width: MediaQuery.of(context).size.width * 0.1,
                               // height: MediaQuery.of(context).size.width * 0.1,

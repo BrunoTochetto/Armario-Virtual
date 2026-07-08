@@ -9,6 +9,7 @@ import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 import 'src/page/inicial.dart';
 
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // <- Necessário na Web;
   // também deve dar: dart run sqflite_common_ffi_web:setup
