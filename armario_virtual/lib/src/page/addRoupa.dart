@@ -1,6 +1,7 @@
 import 'package:armario_virtual/src/widgets/roupaCard.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import '../../model/roupa.dart';
 
@@ -59,9 +60,25 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
 
     if (pickedFile != null) {
       final bytes = await pickedFile.readAsBytes();
-      setState(() {
-        imagemBytes = bytes;
-      });
+      final image = img.decodeImage(bytes);
+
+      if (image != null) {
+        final resizedImage = img.copyResize(
+          image,
+          width: 640,
+          height: 640,
+          interpolation: img.Interpolation.cubic,
+        );
+        final compressedBytes = img.encodeJpg(resizedImage, quality: 85);
+
+        setState(() {
+          imagemBytes = Uint8List.fromList(compressedBytes);
+        });
+      } else {
+        setState(() {
+          imagemBytes = bytes;
+        });
+      }
     }
   }
 
