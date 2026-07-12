@@ -242,6 +242,7 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               spacing: 0,
               children: [
                 Animator(
