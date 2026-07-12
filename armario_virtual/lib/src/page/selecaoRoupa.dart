@@ -1,7 +1,4 @@
-import 'package:armario_virtual/src/widgets/roupaCard.dart';
 import 'package:flutter/material.dart';
-import 'dart:typed_data';
-import 'package:image_picker/image_picker.dart';
 import '../../model/roupa.dart';
 import '../widgets/bottomNavigation.dart';
 
@@ -42,7 +39,12 @@ class SelecaoRoupa extends StatelessWidget {
                 _deletar();
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.delete_forever),
+              icon: Image.asset(
+                "assets/icon/iconLixeira.png",
+                width: 100,
+                height: 100,
+                fit: BoxFit.contain,
+              ),
             ),
           ],
         ),

@@ -1,7 +1,6 @@
 import 'package:armario_virtual/src/widgets/roupaCard.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
-import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import '../../model/roupa.dart';
 
@@ -18,7 +17,6 @@ class adicionarRoupa extends StatefulWidget {
 
 class _adicionarRoupaState extends State<adicionarRoupa> {
   late String categoria;
-  late String categoriaBonito;
   Uint8List imagemBytes = Uint8List.fromList([]);
 
   @override
@@ -28,57 +26,17 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
   }
 
   void pedirRoupa() async {
-    final ImageSource? source = await showModalBottomSheet<ImageSource>(
-      context: context,
-      builder: (context) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.camera_alt_outlined),
-                title: const Text('Tirar uma foto'),
-                onTap: () => Navigator.pop(context, ImageSource.camera),
-              ),
-              ListTile(
-                leading: const Icon(Icons.photo_library_outlined),
-                title: const Text('Buscar na galeria'),
-                onTap: () => Navigator.pop(context, ImageSource.gallery),
-              ),
-            ],
-          ),
-        );
-      },
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
     );
 
-    if (source == null) {
-      return;
-    }
-
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: source);
-
     if (pickedFile != null) {
+      // Convert image into raw bytes (Uint8List)
       final bytes = await pickedFile.readAsBytes();
-      final image = img.decodeImage(bytes);
-
-      if (image != null) {
-        final resizedImage = img.copyResize(
-          image,
-          width: 640,
-          height: 640,
-          interpolation: img.Interpolation.cubic,
-        );
-        final compressedBytes = img.encodeJpg(resizedImage, quality: 85);
-
-        setState(() {
-          imagemBytes = Uint8List.fromList(compressedBytes);
-        });
-      } else {
-        setState(() {
-          imagemBytes = bytes;
-        });
-      }
+      setState(() {
+        imagemBytes = bytes;
+      });
     }
   }
 
@@ -96,7 +54,6 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adicionar Roupa'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_outlined),
           onPressed: () => Navigator.pop(context),
@@ -104,66 +61,110 @@ class _adicionarRoupaState extends State<adicionarRoupa> {
       ),
 
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/fundoTela/fundoVermPont.png')
-            )
+            image: AssetImage('assets/fundoTela/fundoVermPont.png'),
+            fit: BoxFit.cover,
+          ),
         ),
-
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
             // Selecionador de categoria
-            DropdownButton<String>(
-              icon: const Icon(Icons.arrow_downward),
-              elevation: 16,
-              value: categoria,
-              items: categorias.map<DropdownMenuItem<String>>((String value) {
-                categoriaBonito = Roupa.categoriaBonito[value]!;
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(categoriaBonito),
-                );
-              }).toList(),
-              onChanged: (String? value) {
-                setState(() {
-                  categoria = value!;
-                  // categoriaBonito = categoriaBonito;
-                });
-              },
-            ),
-        
-            const SizedBox(height: 24),
-            // Adicionar foto
-            SizedBox(
-              width: 50,
-              height: 50,
-              child: IconButton(
-                onPressed: pedirRoupa,
-                icon: const Icon(Icons.add_a_photo_outlined),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/fundo/fundoTextoAm.png"),
+                  fit: BoxFit.fill,
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Adicione sua\nroupa",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 28),
+                  ),
+
+                  const Divider(color: Colors.black, thickness: 2),
+
+                  DropdownButton<String>(
+                    value: categoria,
+                    isExpanded: true,
+                    underline: const SizedBox(), // remove a linha padrão
+
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      size: 40,
+                      color: Colors.black,
+                    ),
+
+                    items: categorias.map((value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(
+                          Roupa.categoriaBonito[value]!,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      );
+                    }).toList(),
+
+                    onChanged: (value) {
+                      setState(() {
+                        categoria = value!;
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
-        
+
+            const SizedBox(height: 24),
+
             // Mostrar foto
             SizedBox(
               width: 50,
-              height: 250,
+              height: 280,
               child: RoupaCard(
                 roupa: Roupa(imagem: imagemBytes, categoria: categoria),
-                iconePadrao: 'assets/icon/icon${categoria[0].toUpperCase()}${categoria.substring(1)}.png',
-                navegar: false,
               ),
             ),
-        
-            // Enviar foto
-            IconButton(
-              onPressed: () async {
-                bool deuBoa = await inserirRoupa();
-                if (deuBoa) {
-                  Navigator.pop(context);
-                }
-              },
-              icon: Icon(Icons.save),
+
+            const SizedBox(height: 14),
+
+            Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: pedirRoupa,
+                    child: Image.asset(
+                      'assets/icon/iconCamera.png',
+                      height: 100,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 16),
+
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      bool deuBoa = await inserirRoupa();
+                      if (deuBoa) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Image.asset(
+                      'assets/botoes/botaoSalvar.png',
+                      height: 100,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

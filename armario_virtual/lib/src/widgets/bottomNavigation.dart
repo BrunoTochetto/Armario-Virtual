@@ -1,5 +1,3 @@
-import 'package:armario_virtual/src/page/armarioPadrao.dart';
-import 'package:armario_virtual/src/page/inicial.dart';
 import 'package:flutter/material.dart';
 import './popUpEscolher.dart';
 

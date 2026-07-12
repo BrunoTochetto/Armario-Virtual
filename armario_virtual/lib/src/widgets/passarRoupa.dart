@@ -99,7 +99,11 @@ class _PassarRoupaState extends State<PassarRoupa> {
       children: [
         Animator(offsetAnimation: 3, duration: Duration(seconds:9), child: botaoEsquerdaWidget),
 
+        const SizedBox(width: 20),
+
         Animator(offsetAnimation: index, child: roupaWidget),
+
+        const SizedBox(width: 20),
 
         Animator(offsetAnimation: 5, duration: Duration(seconds:9), child: botaoDireitaWidget,),
       ],
