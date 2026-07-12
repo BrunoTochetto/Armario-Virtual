@@ -77,8 +77,29 @@ class _ArmarioPadraoState extends State<ArmarioPadrao> {
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Erro: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(
-                          child: Text('Nenhuma roupa encontrada'),
+                        return Column(
+                          children: [
+                            const Center(
+                              child: Text(
+                                'Nenhuma roupa encontrada :(',
+                                style: TextStyle(fontSize: 28),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/addRoupa',
+                                  arguments: {'categoria': widget.categoria},
+                                ).then((onValue) => setState(() => {}));
+                              },
+                              icon: Image.asset(
+                                'assets/botoes/botaoAdd.png',
+                                width: 80,
+                              ),
+                            ),
+                          ],
                         );
                       }
 

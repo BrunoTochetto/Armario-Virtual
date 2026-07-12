@@ -16,7 +16,7 @@ class Inicial extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/fundo/fundoBranco.png'),
+            image: AssetImage('assets/fundoTela/fundoBranco.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -28,6 +28,7 @@ class Inicial extends StatelessWidget {
               carregarRoupas: () => Roupa.acharRoupaDeCategoria('cabeca'),
               iconePadrao: 'assets/icon/iconCabeca.png',
               fundo: 'fundoBotaoAm',
+              categoria: 'cabeca',
             ),
 
             SizedBox(height: 8),
@@ -36,6 +37,7 @@ class Inicial extends StatelessWidget {
               carregarRoupas: () => Roupa.acharRoupaDeCategoria('tronco'),
               iconePadrao: 'assets/icon/iconTronco.png',
               fundo: 'fundoBotaoAz',
+              categoria: 'tronco',
             ),
 
             SizedBox(height: 8),
@@ -44,6 +46,7 @@ class Inicial extends StatelessWidget {
               carregarRoupas: () => Roupa.acharRoupaDeCategoria('pernas'),
               iconePadrao: 'assets/icon/iconPernas.png',
               fundo: 'fundoBotaoV',
+              categoria: 'pernas',
             ),
 
             SizedBox(height: 8),
@@ -52,6 +55,7 @@ class Inicial extends StatelessWidget {
               carregarRoupas: () => Roupa.acharRoupaDeCategoria('pes'),
               iconePadrao: 'assets/icon/iconPes.png',
               fundo: 'fundoBotaoAz',
+              categoria: 'pes',
             ),
           ],
         ),
@@ -64,12 +68,14 @@ class _compactFutureBuilderParaRoupas extends StatefulWidget {
   final Future<List<Map<String, dynamic>>> Function() carregarRoupas;
   final String iconePadrao;
   final String fundo;
+  final String categoria;
 
   const _compactFutureBuilderParaRoupas({
     super.key,
     required this.carregarRoupas,
     this.iconePadrao = 'assets/icon/iconCabeca.png',
     this.fundo = 'fundoBotaoAm',
+    required this.categoria
   });
 
   @override
@@ -96,20 +102,7 @@ class _compactFutureBuilderParaRoupasState
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      initialData: [
-        // RoupaCard(
-        //   papelFundo: widget.fundo,
-        //   iconePadrao: widget.iconePadrao,
-        //   navegar: false,
-        //   roupa: null,
-        // ),
-        // PassarRoupa(
-        //       fundo: widget.fundo,
-        //       iconePadrao: widget.iconePadrao,
-        //       atualizarPaginaQueEsta: atualizar,
-        //       roupaLista: [],
-        //     )
-      ],
+      initialData: [],
       future: _future,
       builder: (context, snapshot) {
         //Snapshot é a variável dos dados pegados.
@@ -128,12 +121,6 @@ class _compactFutureBuilderParaRoupasState
                   roupa: null,
                   width: MediaQuery.of(context).size.width * 0.48,
                 );
-            // return PassarRoupa(
-            //   fundo: widget.fundo,
-            //   iconePadrao: widget.iconePadrao,
-            //   // atualizarPaginaQueEsta: atualizar,
-            //   roupaLista: [],
-            // );
             case ConnectionState.done:
             // Obter as informações do banco
             List<Map<String, dynamic>> valores =
@@ -143,10 +130,12 @@ class _compactFutureBuilderParaRoupasState
                     >; // Casting, fazendo o snapshot ser forçadamente um Map
 
             return PassarRoupa(
+              categoria: widget.categoria,
               fundo: widget.fundo,
               iconePadrao: widget.iconePadrao,
               roupaLista: valores,
               atualizarPaginaQueEsta: atualizar,
+
             );
         }
       },

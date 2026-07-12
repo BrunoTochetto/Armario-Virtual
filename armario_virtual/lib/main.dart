@@ -23,6 +23,9 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: 'ArchitectsDaughter',
+      ),
       // home: const Inicial(),
       initialRoute: '/',
       routes: {

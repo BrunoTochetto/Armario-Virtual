@@ -10,12 +10,14 @@ class PassarRoupa extends StatefulWidget {
   final String iconePadrao;
   final List<Map<String, dynamic>> roupaLista;
   final Function? atualizarPaginaQueEsta;
+  final String categoria;
 
   const PassarRoupa({
     super.key,
     required this.fundo,
     required this.iconePadrao,
     required this.roupaLista,
+    required this.categoria,
     this.atualizarPaginaQueEsta,
   });
 
@@ -61,7 +63,7 @@ class _PassarRoupaState extends State<PassarRoupa> {
             child: Image.asset('assets/botoes/setaEsquerda.png', width: 40),
           )
         : SizedBox();
-
+    GestureTapCallback funcao = (() => ());
     Roupa? roupaAtualCriada;
     if (valoresAtuais.isNotEmpty) {
       roupaAtualCriada = Roupa(
@@ -69,7 +71,15 @@ class _PassarRoupaState extends State<PassarRoupa> {
         imagem: valoresAtuais["imagem"],
         id: valoresAtuais["id"]
       );
+    } else {
+      funcao = (() => {
+        Navigator.pushNamed(context, '/addRoupa', arguments: {"categoria": widget.categoria}).then(
+          (_)  => widget.atualizarPaginaQueEsta?.call())
+      });
     }
+    
+
+
     Widget roupaWidget = RoupaCard(
       roupa: roupaAtualCriada,
       iconePadrao: widget.iconePadrao,
@@ -77,6 +87,7 @@ class _PassarRoupaState extends State<PassarRoupa> {
       width: MediaQuery.of(context).size.width * 0.48,
       height: MediaQuery.of(context).size.height * 0.18,
       atualizarPaginaQueEsta: atualizarPaginaQueEsta,
+      funcaoOnTap: funcao
     );
 
     Widget botaoDireitaWidget = maxIndex != 0
@@ -99,11 +110,11 @@ class _PassarRoupaState extends State<PassarRoupa> {
       children: [
         Animator(offsetAnimation: 3, duration: Duration(seconds:9), child: botaoEsquerdaWidget),
 
-        const SizedBox(width: 20),
+        const SizedBox(width: 5),
 
-        Animator(offsetAnimation: index, child: roupaWidget),
+        Animator(offsetAnimation: index, duration: Duration(seconds: 8),child: roupaWidget),
 
-        const SizedBox(width: 20),
+        const SizedBox(width: 5),
 
         Animator(offsetAnimation: 5, duration: Duration(seconds:9), child: botaoDireitaWidget,),
       ],
