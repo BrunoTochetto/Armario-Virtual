@@ -16,7 +16,7 @@ void main() {
 
   if (kIsWeb) {
     databaseFactory = databaseFactoryFfiWeb;
-  } else if(Platform.isWindows || Platform.isLinux || Platform.isMacOS ) { //padrão para qualquer app
+  } else if(Platform.isWindows || Platform.isLinux || Platform.isMacOS || Platform.isAndroid ) { //padrão para qualquer app
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   } 
